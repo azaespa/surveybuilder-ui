@@ -1,0 +1,48 @@
+<div class="header">
+    <h1>FORM BUILDER</h1>
+</div>
+
+<main>
+    <div class="sidebar">
+        <button type="button" class="text-form" (click)="createTextForm()">TEXT</button>
+        <button type="button" class="mc-form" (click)="createMcForm()">CHOICES</button>
+    </div>
+
+    <div class="fb-form" [formGroup]="fbForm">
+        <div class="form-array" formArrayName="questionForms">
+            <div *ngFor="let qf of questionForms.controls; let i = index" [formGroupName]="i" class="question-forms">
+                <ng-container *ngIf="qf.value['answerType'] == 'text'">
+                    <span class="question-no">{{i + 1}}.</span>
+                    <input type="text" formControlName="question" placeholder="..." class="question-input">
+                    <br>
+                    <br>
+                    <input type="text" placeholder="Type your answer here..." class="answer-input" disabled>
+                </ng-container>
+                <ng-container *ngIf="qf.value['answerType'] == 'multiple-choice'">
+                    <span class="question-no">{{i + 1}}.</span>
+                    <input type="text" formControlName="question" placeholder="..." class="question-input">
+                    <br>
+                    <br>
+                    <div class="choices-container" formGroupName="choices">
+                        <div class="choices">
+                            <label class="choice">A</label>
+                            <input type="text" placeholder="choice 1" class="choice-input" formControlName="choiceA">
+                        </div>
+                        <div class="choices">
+                            <label class="choice">B</label>
+                            <input type="text" placeholder="choice 2" class="choice-input" formControlName="choiceB">
+                        </div>
+                        <div class="choices">
+                            <label class="choice">C</label>
+                            <input type="text" placeholder="choice 3" class="choice-input" formControlName="choiceC">
+                        </div>
+                        <div class="choices">
+                            <label class="choice">D</label>
+                            <input type="text" placeholder="choice 4" class="choice-input" formControlName="choiceD">
+                        </div>
+                    </div>
+                </ng-container>
+            </div>
+        </div>
+    </div>
+</main>
