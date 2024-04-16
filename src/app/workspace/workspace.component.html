@@ -1,6 +1,7 @@
 <p>workspace works!</p>
-<div *ngFor="let surveyForm of surveyForms; let i = index">
+<button type="button" (click)="createSurveyForm()">CREATE</button>
+<div *ngFor="let surveyForm of surveyForms">
     <div>
-        {{i + 1 + " " + surveyForm.surveyId }}
+        {{ surveyForm.surveyFormId | json}}
     </div>
 </div>

@@ -12,7 +12,20 @@ export class SurveyFormService {
 
   constructor(private http: HttpClient) {}
 
+  addSurveyForm(surveyForm: Surveyform): Observable<Surveyform> {
+    return this.http.post<Surveyform>(
+      `${this.apiServerUrl}/surveyforms/add`,
+      surveyForm
+    );
+  }
+
   getAllSurveyForms(): Observable<Surveyform[]> {
     return this.http.get<Surveyform[]>(`${this.apiServerUrl}/surveyforms/all`);
+  }
+
+  getSurveyFormById(id: String): Observable<Surveyform> {
+    return this.http.get<Surveyform>(
+      `${this.apiServerUrl}/surveyforms/find/${id}`
+    );
   }
 }

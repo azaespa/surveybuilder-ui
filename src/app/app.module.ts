@@ -7,6 +7,8 @@ import { FormBuilderComponent } from './form-builder/form-builder.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { WorkspaceComponent } from './workspace/workspace.component';
 import { HttpClientModule } from '@angular/common/http';
+import { RouterLink, RouterOutlet, provideRouter } from '@angular/router';
+import { routes } from './app.routes';
 
 @NgModule({
   declarations: [
@@ -15,8 +17,14 @@ import { HttpClientModule } from '@angular/common/http';
     FormBuilderComponent,
     WorkspaceComponent,
   ],
-  imports: [BrowserModule, ReactiveFormsModule, HttpClientModule],
-  providers: [],
+  imports: [
+    BrowserModule,
+    ReactiveFormsModule,
+    HttpClientModule,
+    RouterOutlet,
+    RouterLink,
+  ],
+  providers: [provideRouter(routes)],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
