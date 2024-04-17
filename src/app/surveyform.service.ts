@@ -28,4 +28,11 @@ export class SurveyFormService {
       `${this.apiServerUrl}/surveyforms/find/${id}`
     );
   }
+
+  updateSurveyForm(updateSurveyForm: Surveyform): Observable<Surveyform> {
+    return this.http.put<Surveyform>(
+      `${this.apiServerUrl}/surveyforms/update`,
+      updateSurveyForm
+    );
+  }
 }

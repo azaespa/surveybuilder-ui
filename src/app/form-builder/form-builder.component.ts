@@ -11,6 +11,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 })
 export class FormBuilderComponent implements OnInit {
   fbForm: FormGroup = new FormGroup({});
+  textForm: FormGroup = new FormGroup({});
   surveyForm: Surveyform = {
     id: '',
     surveyFormId: '',
@@ -54,12 +55,16 @@ export class FormBuilderComponent implements OnInit {
   }
 
   createTextForm() {
-    this.questionForms.push(
-      this.formBuilder.group({
-        question: [''],
-        answerType: ['text'],
-      })
-    );
+    this.textForm = this.formBuilder.group({
+      question: ['...'],
+      answerType: ['text'],
+    });
+
+    this.questionForms.push(this.textForm);
+
+    this.surveyForm.questionForm.push(this.textForm.value);
+
+    this.saveChanges();
   }
 
   createMcForm() {
@@ -76,5 +81,15 @@ export class FormBuilderComponent implements OnInit {
       })
     );
     console.log(this.questionForms.value);
+  }
+
+  updateSurveyForm(updateSurveyForm: Surveyform): void {
+    this.surveyFormService
+      .updateSurveyForm(updateSurveyForm)
+      .subscribe((response) => console.log(response));
+  }
+
+  saveChanges() {
+    this.updateSurveyForm(this.surveyForm);
   }
 }
