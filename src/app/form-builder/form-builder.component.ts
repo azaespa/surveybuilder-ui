@@ -18,8 +18,6 @@ export class FormBuilderComponent implements OnInit {
     questionForm: [{ answerType: '', question: '' }],
   };
 
-  private paramSurveyFormId: String;
-
   constructor(
     private formBuilder: FormBuilder,
     private surveyFormService: SurveyFormService,
@@ -28,24 +26,10 @@ export class FormBuilderComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    // last save in db will be here
-    //
-    this.paramSurveyFormId = this.route.snapshot.paramMap.get('id');
-    this.getSurveyFormById(this.paramSurveyFormId);
+    this.getSurveyFormById(this.route.snapshot.paramMap.get('id'));
 
     this.fbForm = this.formBuilder.group({
-      questionForms: this.formBuilder.array([
-        this.formBuilder.group({
-          question: [''],
-          answerType: ['multiple-choice'],
-          choices: this.formBuilder.group({
-            choiceA: [''],
-            choiceB: [''],
-            choiceC: [''],
-            choiceD: [''],
-          }),
-        }),
-      ]),
+      questionForms: this.formBuilder.array([]),
     });
   }
 
@@ -53,6 +37,14 @@ export class FormBuilderComponent implements OnInit {
     this.surveyFormService.getSurveyFormById(id).subscribe({
       next: (result: Surveyform) => {
         this.surveyForm = result;
+        this.surveyForm.questionForm.forEach((form) => {
+          this.questionForms.push(
+            this.formBuilder.group({
+              question: [form.question],
+              answerType: [form.answerType],
+            })
+          );
+        });
       },
     });
   }
