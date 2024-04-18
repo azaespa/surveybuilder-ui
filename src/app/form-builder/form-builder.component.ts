@@ -16,7 +16,7 @@ export class FormBuilderComponent implements OnInit {
     id: '',
     surveyFormId: '',
     surveyFormName: '',
-    questionForm: [{ answerType: '', question: '' }],
+    questionForms: [{ answerType: '', question: '' }],
   };
 
   constructor(
@@ -38,7 +38,7 @@ export class FormBuilderComponent implements OnInit {
     this.surveyFormService.getSurveyFormById(id).subscribe({
       next: (result: Surveyform) => {
         this.surveyForm = result;
-        this.surveyForm.questionForm.forEach((form) => {
+        this.surveyForm.questionForms.forEach((form) => {
           this.questionForms.push(
             this.formBuilder.group({
               question: [form.question],
@@ -62,7 +62,7 @@ export class FormBuilderComponent implements OnInit {
 
     this.questionForms.push(this.textForm);
 
-    this.surveyForm.questionForm.push(this.textForm.value);
+    this.surveyForm.questionForms.push(this.textForm.value);
 
     this.saveChanges();
   }

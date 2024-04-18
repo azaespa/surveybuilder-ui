@@ -36,7 +36,7 @@ export class WorkspaceComponent implements OnInit {
   createSurveyForm(): void {
     this.surveyFormService
       .addSurveyForm({
-        questionForm: [
+        questionForms: [
           {
             answerType: 'text',
             question: '...',
