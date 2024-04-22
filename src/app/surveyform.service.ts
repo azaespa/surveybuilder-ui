@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Surveyform } from './surveyform';
+import { Questionform, Surveyform } from './surveyform';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment.development';
 
@@ -33,6 +33,15 @@ export class SurveyFormService {
     return this.http.put<Surveyform>(
       `${this.apiServerUrl}/surveyforms/update`,
       updateSurveyForm
+    );
+  }
+
+  updateQuestionForm(
+    updateQuestionForm: Questionform
+  ): Observable<Questionform> {
+    return this.http.put<Questionform>(
+      `${this.apiServerUrl}/questionforms/update`,
+      updateQuestionForm
     );
   }
 }

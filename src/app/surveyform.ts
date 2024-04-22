@@ -1,6 +1,17 @@
 export interface Surveyform {
   id?: string;
-  surveyFormId?: string;
   surveyFormName?: string;
-  questionForms: [{ answerType: string; question: string }];
+  questionForms: [
+    {
+      id?: string;
+      answerType: string;
+      question: string;
+    }
+  ];
+}
+
+export interface Questionform {
+  id?: string;
+  answerType: string;
+  question: string;
 }

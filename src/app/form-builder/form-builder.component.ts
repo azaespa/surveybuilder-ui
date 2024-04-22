@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, FormArray, Form } from '@angular/forms';
 import { SurveyFormService } from '../surveyform.service';
-import { Surveyform } from '../surveyform';
+import { Questionform, Surveyform } from '../surveyform';
 import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
@@ -12,11 +12,17 @@ import { ActivatedRoute, Router } from '@angular/router';
 export class FormBuilderComponent implements OnInit {
   fbForm: FormGroup = new FormGroup({});
   textForm: FormGroup = new FormGroup({});
+  mcForm: FormGroup = new FormGroup({});
   surveyForm: Surveyform = {
     id: '',
-    surveyFormId: '',
     surveyFormName: '',
-    questionForms: [{ answerType: '', question: '' }],
+    questionForms: [
+      {
+        id: '',
+        answerType: '',
+        question: '',
+      },
+    ],
   };
 
   constructor(
@@ -41,6 +47,7 @@ export class FormBuilderComponent implements OnInit {
         this.surveyForm.questionForms.forEach((form) => {
           this.questionForms.push(
             this.formBuilder.group({
+              id: [form.id],
               question: [form.question],
               answerType: [form.answerType],
             })
@@ -61,31 +68,38 @@ export class FormBuilderComponent implements OnInit {
     });
 
     this.questionForms.push(this.textForm);
-
     this.surveyForm.questionForms.push(this.textForm.value);
 
     this.saveChanges();
   }
 
   createMcForm() {
-    this.questionForms.push(
-      this.formBuilder.group({
-        question: [''],
-        answerType: ['multiple-choice'],
-        choices: this.formBuilder.group({
-          choiceA: [''],
-          choiceB: [''],
-          choiceC: [''],
-          choiceD: [''],
-        }),
-      })
-    );
-    console.log(this.questionForms.value);
+    this.mcForm = this.formBuilder.group({
+      question: [''],
+      answerType: ['multiple-choice'],
+      choices: this.formBuilder.group({
+        choiceA: [''],
+        choiceB: [''],
+        choiceC: [''],
+        choiceD: [''],
+      }),
+    });
+
+    this.questionForms.push(this.mcForm);
+    this.surveyForm.questionForms.push(this.mcForm.value);
+
+    this.saveChanges();
   }
 
   updateSurveyForm(updateSurveyForm: Surveyform): void {
     this.surveyFormService
       .updateSurveyForm(updateSurveyForm)
+      .subscribe((response) => console.log(response));
+  }
+
+  updateQuestionForm(updateQuestionForm: Questionform): void {
+    this.surveyFormService
+      .updateQuestionForm(updateQuestionForm)
       .subscribe((response) => console.log(response));
   }
 
