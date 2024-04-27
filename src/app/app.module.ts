@@ -9,6 +9,7 @@ import { WorkspaceComponent } from './workspace/workspace.component';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterLink, RouterOutlet, provideRouter } from '@angular/router';
 import { routes } from './app.routes';
+import { LoginPageComponent } from './login-page/login-page.component';
 
 @NgModule({
   declarations: [
@@ -16,6 +17,7 @@ import { routes } from './app.routes';
     SurveyFormComponent,
     FormBuilderComponent,
     WorkspaceComponent,
+    LoginPageComponent,
   ],
   imports: [
     BrowserModule,
