@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Questionform, Surveyform } from './surveyform';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment.development';
+import { User } from './user';
 
 @Injectable({
   providedIn: 'root',
@@ -19,8 +20,10 @@ export class SurveyFormService {
     );
   }
 
-  getAllSurveyForms(): Observable<Surveyform[]> {
-    return this.http.get<Surveyform[]>(`${this.apiServerUrl}/surveyforms/all`);
+  getAllSurveyFormsByUserId(userId: String): Observable<Surveyform[]> {
+    return this.http.get<Surveyform[]>(
+      `${this.apiServerUrl}/surveyforms/${userId}/all`
+    );
   }
 
   getSurveyFormById(id: String): Observable<Surveyform> {

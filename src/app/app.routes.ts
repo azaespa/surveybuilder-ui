@@ -4,7 +4,7 @@ import { FormBuilderComponent } from './form-builder/form-builder.component';
 import { LoginPageComponent } from './login-page/login-page.component';
 
 export const routes: Routes = [
-  { path: 'workspace', component: WorkspaceComponent },
+  { path: 'workspace/:id', component: WorkspaceComponent },
   { path: 'form-builder/:id', component: FormBuilderComponent },
   { path: 'login', component: LoginPageComponent },
 ];

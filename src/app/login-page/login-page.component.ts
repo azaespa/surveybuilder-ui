@@ -3,6 +3,7 @@ import { UserService } from '../user.service';
 import { User } from '../user';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { HttpErrorResponse } from '@angular/common/http';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-login-page',
@@ -15,7 +16,9 @@ export class LoginPageComponent implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
-    private userService: UserService
+    private userService: UserService,
+    private router: Router,
+    private route: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
@@ -27,6 +30,7 @@ export class LoginPageComponent implements OnInit {
 
   login(): void {
     this.user = this.loginForm.value;
+
     if (this.user.username.length < 5 || this.user.username.includes(' ')) {
       return alert('Please enter a valid username');
     } else if (this.user.password.length < 8) {
@@ -39,7 +43,8 @@ export class LoginPageComponent implements OnInit {
           return alert('Please enter a correct password');
         }
 
-        console.log(result);
+        this.userService.setCurrentUser(result);
+        this.router.navigate(['/workspace', result.id]);
       },
       error: (error: HttpErrorResponse) => {
         alert(error.error.message);
