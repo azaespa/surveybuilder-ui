@@ -1,7 +1,8 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment.development';
 import { User } from './user';
+import { Observable, catchError, throwError } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -11,7 +12,7 @@ export class UserService {
 
   constructor(private http: HttpClient) {}
 
-  getUser(user: User) {
+  getUser(user: User): Observable<Object> {
     return this.http.get(
       `${this.apiServerUrl}/users/find/username?u=${user.username}`
     );
