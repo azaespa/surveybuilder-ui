@@ -24,6 +24,7 @@ export class FormBuilderComponent implements OnInit {
       },
     ],
   };
+  surveyFormId: String;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -33,11 +34,13 @@ export class FormBuilderComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.getSurveyFormById(this.route.snapshot.paramMap.get('id'));
+    this.surveyFormId = this.route.snapshot.paramMap.get('id');
 
     this.fbForm = this.formBuilder.group({
       questionForms: this.formBuilder.array([]),
     });
+
+    this.getSurveyFormById(this.surveyFormId);
   }
 
   getSurveyFormById(id: String): void {
@@ -61,16 +64,28 @@ export class FormBuilderComponent implements OnInit {
     return this.fbForm.controls['questionForms'] as FormArray;
   }
 
+  addNewQuestionForm(surveyFormId: String, questionForm: Questionform) {
+    this.surveyFormService
+      .addQuestionForm(surveyFormId, questionForm)
+      .subscribe((response) => {
+        this.textForm = this.formBuilder.group({
+          id: response.id,
+          question: response.question,
+          answerType: response.answerType,
+          choicesForms: response.choicesForms,
+        });
+
+        this.questionForms.push(this.textForm);
+      });
+  }
+
   createTextForm() {
-    this.textForm = this.formBuilder.group({
-      question: ['...'],
-      answerType: ['text'],
-    });
+    const newTextForm: Questionform = {
+      question: '...',
+      answerType: 'text',
+    };
 
-    this.questionForms.push(this.textForm);
-    this.surveyForm.questionForms.push(this.textForm.value);
-
-    this.saveChanges();
+    this.addNewQuestionForm(this.surveyFormId, newTextForm);
   }
 
   createMcForm() {

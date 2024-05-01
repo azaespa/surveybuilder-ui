@@ -14,6 +14,7 @@ import { UserService } from '../user.service';
 export class WorkspaceComponent implements OnInit {
   public surveyForms: Surveyform[];
   public user: User;
+  public userId: String;
 
   constructor(
     private surveyFormService: SurveyFormService,
@@ -23,12 +24,8 @@ export class WorkspaceComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.userService.currentUser.subscribe({
-      next: (response: User) => {
-        this.user = response;
-      },
-    });
-    this.getAllSurveyFormsByUserId(this.route.snapshot.paramMap.get('id'));
+    this.userId = this.route.snapshot.paramMap.get('id');
+    this.getAllSurveyFormsByUserId(this.userId);
   }
 
   getAllSurveyFormsByUserId(userId: String): void {
@@ -45,16 +42,10 @@ export class WorkspaceComponent implements OnInit {
 
   createSurveyForm(): void {
     this.surveyFormService
-      .addSurveyForm({
-        questionForms: [
-          {
-            answerType: 'text',
-            question: '...',
-          },
-        ],
+      .addSurveyForm(this.userId, {
+        questionForms: [],
       })
       .subscribe((surveyForm) => {
-        this.surveyForms.push(surveyForm);
         this.router.navigate(['/form-builder', surveyForm.id]);
       });
   }

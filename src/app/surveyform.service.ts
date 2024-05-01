@@ -3,7 +3,6 @@ import { Injectable } from '@angular/core';
 import { Questionform, Surveyform } from './surveyform';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment.development';
-import { User } from './user';
 
 @Injectable({
   providedIn: 'root',
@@ -13,10 +12,23 @@ export class SurveyFormService {
 
   constructor(private http: HttpClient) {}
 
-  addSurveyForm(surveyForm: Surveyform): Observable<Surveyform> {
+  addSurveyForm(
+    userId: String,
+    surveyForm: Surveyform
+  ): Observable<Surveyform> {
     return this.http.post<Surveyform>(
-      `${this.apiServerUrl}/surveyforms/add`,
+      `${this.apiServerUrl}/surveyforms/${userId}/add`,
       surveyForm
+    );
+  }
+
+  addQuestionForm(
+    surveyFormId: String,
+    questionForm: Questionform
+  ): Observable<Questionform> {
+    return this.http.post<Questionform>(
+      `${this.apiServerUrl}/questionforms/${surveyFormId}/add`,
+      questionForm
     );
   }
 
