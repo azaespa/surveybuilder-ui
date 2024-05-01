@@ -1,18 +1,18 @@
 <div class="header">
-    <h1>FORM BUILDER : {{ surveyForm.id }}</h1>
-    <button type="button" (click)="saveChanges()">SAVE</button>
+    <h1>FORM BUILDER : {{ surveyFormId }}</h1>
+    <button type="button">SAVE</button>
 </div>
 
 <main>
     <div class="sidebar">
         <button type="button" class="text-form" (click)="createTextForm()">TEXT</button>
-        <button type="button" class="mc-form" (click)="createMcForm()">CHOICES</button>
+        <button type="button" class="mc-form">CHOICES</button>
     </div>
 
     <div class="fb-form" [formGroup]="fbForm">
         <div class="form-array" formArrayName="questionForms">
             <div *ngFor="let qf of questionForms.controls; let i = index" [formGroupName]="i" class="question-forms">
-                <ng-container *ngIf="qf.value['answerType'] == 'text'" (change)="updateQuestionForm(qf.value)">
+                <ng-container *ngIf="qf.value['answerType'] == 'text'">
                     <span class="question-no">{{i + 1}}.</span>
                     <input type="text" formControlName="question" placeholder="..." class="question-input">
                     <br>

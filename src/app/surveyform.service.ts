@@ -22,25 +22,9 @@ export class SurveyFormService {
     );
   }
 
-  addQuestionForm(
-    surveyFormId: String,
-    questionForm: Questionform
-  ): Observable<Questionform> {
-    return this.http.post<Questionform>(
-      `${this.apiServerUrl}/questionforms/${surveyFormId}/add`,
-      questionForm
-    );
-  }
-
-  getAllSurveyFormsByUserId(userId: String): Observable<Surveyform[]> {
+  getAllSurveyFormByUserId(userId: String): Observable<Surveyform[]> {
     return this.http.get<Surveyform[]>(
       `${this.apiServerUrl}/surveyforms/${userId}/all`
-    );
-  }
-
-  getSurveyFormById(id: String): Observable<Surveyform> {
-    return this.http.get<Surveyform>(
-      `${this.apiServerUrl}/surveyforms/find/${id}`
     );
   }
 
@@ -48,15 +32,6 @@ export class SurveyFormService {
     return this.http.put<Surveyform>(
       `${this.apiServerUrl}/surveyforms/update`,
       updateSurveyForm
-    );
-  }
-
-  updateQuestionForm(
-    updateQuestionForm: Questionform
-  ): Observable<Questionform> {
-    return this.http.put<Questionform>(
-      `${this.apiServerUrl}/questionforms/update`,
-      updateQuestionForm
     );
   }
 }

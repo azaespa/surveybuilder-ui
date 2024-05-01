@@ -29,7 +29,7 @@ export class WorkspaceComponent implements OnInit {
   }
 
   getAllSurveyFormsByUserId(userId: String): void {
-    this.surveyFormService.getAllSurveyFormsByUserId(userId).subscribe({
+    this.surveyFormService.getAllSurveyFormByUserId(userId).subscribe({
       next: (surveyForms: Surveyform[]) => {
         this.surveyForms = surveyForms;
         console.log(this.surveyForms);

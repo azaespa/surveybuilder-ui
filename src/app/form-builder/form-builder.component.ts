@@ -3,6 +3,7 @@ import { FormGroup, FormBuilder, FormArray, Form } from '@angular/forms';
 import { SurveyFormService } from '../surveyform.service';
 import { Questionform, Surveyform } from '../surveyform';
 import { ActivatedRoute, Router } from '@angular/router';
+import { QuestionformService } from '../questionform.service';
 
 @Component({
   selector: 'app-form-builder',
@@ -13,22 +14,12 @@ export class FormBuilderComponent implements OnInit {
   fbForm: FormGroup = new FormGroup({});
   textForm: FormGroup = new FormGroup({});
   mcForm: FormGroup = new FormGroup({});
-  surveyForm: Surveyform = {
-    id: '',
-    surveyFormName: '',
-    questionForms: [
-      {
-        id: '',
-        answerType: '',
-        question: '',
-      },
-    ],
-  };
   surveyFormId: String;
 
   constructor(
     private formBuilder: FormBuilder,
     private surveyFormService: SurveyFormService,
+    private questionFormService: QuestionformService,
     private route: ActivatedRoute,
     private router: Router
   ) {}
@@ -40,14 +31,13 @@ export class FormBuilderComponent implements OnInit {
       questionForms: this.formBuilder.array([]),
     });
 
-    this.getSurveyFormById(this.surveyFormId);
+    this.getAllQuestionFormBySurveyFormId(this.surveyFormId);
   }
 
-  getSurveyFormById(id: String): void {
-    this.surveyFormService.getSurveyFormById(id).subscribe({
-      next: (result: Surveyform) => {
-        this.surveyForm = result;
-        this.surveyForm.questionForms.forEach((form) => {
+  getAllQuestionFormBySurveyFormId(id: String): void {
+    this.questionFormService.getAllQuestionFormBySurveyFormId(id).subscribe({
+      next: (questionForms: Questionform[]) => {
+        questionForms.forEach((form) => {
           this.questionForms.push(
             this.formBuilder.group({
               id: [form.id],
@@ -65,7 +55,7 @@ export class FormBuilderComponent implements OnInit {
   }
 
   addNewQuestionForm(surveyFormId: String, questionForm: Questionform) {
-    this.surveyFormService
+    this.questionFormService
       .addQuestionForm(surveyFormId, questionForm)
       .subscribe((response) => {
         this.textForm = this.formBuilder.group({
@@ -86,39 +76,5 @@ export class FormBuilderComponent implements OnInit {
     };
 
     this.addNewQuestionForm(this.surveyFormId, newTextForm);
-  }
-
-  createMcForm() {
-    this.mcForm = this.formBuilder.group({
-      question: [''],
-      answerType: ['multiple-choice'],
-      choices: this.formBuilder.group({
-        choiceA: [''],
-        choiceB: [''],
-        choiceC: [''],
-        choiceD: [''],
-      }),
-    });
-
-    this.questionForms.push(this.mcForm);
-    this.surveyForm.questionForms.push(this.mcForm.value);
-
-    this.saveChanges();
-  }
-
-  updateSurveyForm(updateSurveyForm: Surveyform): void {
-    this.surveyFormService
-      .updateSurveyForm(updateSurveyForm)
-      .subscribe((response) => console.log(response));
-  }
-
-  updateQuestionForm(updateQuestionForm: Questionform): void {
-    this.surveyFormService
-      .updateQuestionForm(updateQuestionForm)
-      .subscribe((response) => console.log(response));
-  }
-
-  saveChanges() {
-    this.updateSurveyForm(this.surveyForm);
   }
 }
